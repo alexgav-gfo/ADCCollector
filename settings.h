@@ -39,6 +39,7 @@ struct GlobalView {
     int frequency;
     int meaningDataBuffer;
     bool dataInOneFile;
+    bool autoStart;
 };
 
 /**

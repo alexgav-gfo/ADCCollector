@@ -70,6 +70,7 @@ void Settings::saveGlobalSettings(GlobalView *globalView) {
     settings.setValue("frequency", globalView->frequency);
     settings.setValue("meaning_data_buffer", globalView->meaningDataBuffer);
     settings.setValue("data_in_one_file", globalView->dataInOneFile);
+    settings.setValue("autostart", globalView->autoStart);
 }
 
 /**
@@ -85,6 +86,7 @@ GlobalView Settings::loadGlobalSettings() {
     globalView.frequency = settings.value(group + "/frequency", 100).toInt();
     globalView.meaningDataBuffer = settings.value(group + "/meaning_data_buffer", 0).toInt();
     globalView.dataInOneFile = settings.value(group + "/data_in_one_file", false).toBool();
+    globalView.autoStart = settings.value(group + "/autostart", false).toBool();
     return globalView;
 }
 

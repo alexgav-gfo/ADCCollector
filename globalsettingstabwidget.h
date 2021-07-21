@@ -41,6 +41,7 @@ private:
     QComboBox *frequencies;
     QComboBox *meaningDataBuffer;
     QCheckBox *dataInOneFileCheckBox;
+    QCheckBox *autoStart;
     QVBoxLayout *labels;
     QHBoxLayout *freq;
     QHBoxLayout *mean;

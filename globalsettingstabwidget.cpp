@@ -63,8 +63,10 @@ GlobalSettingsTabWidget::GlobalSettingsTabWidget(QWidget *parent) : QWidget(pare
     mean->addWidget(meaningDataBuffer);
 
     dataInOneFileCheckBox = new QCheckBox(tr("Data in one file"), this);
-    dataInOneFileCheckBox->setCheckable(true);
     dataInOneFileCheckBox->setChecked(globalSets.dataInOneFile);
+
+    autoStart = new QCheckBox(tr("Autostart at program start"),this);
+    autoStart->setChecked(globalSets.autoStart);
 
     labels = new QVBoxLayout(this);
     labels->addWidget(dataRootSelector);
@@ -72,6 +74,7 @@ GlobalSettingsTabWidget::GlobalSettingsTabWidget(QWidget *parent) : QWidget(pare
     labels->addLayout(freq);
     labels->addLayout(mean);
     labels->addWidget(dataInOneFileCheckBox);
+    labels->addWidget(autoStart);
     labels->addStretch();
 }
 
@@ -87,5 +90,6 @@ GlobalView GlobalSettingsTabWidget::getSets() {
     globalSets.dataInOneFile = dataInOneFileCheckBox->isChecked();
     QString m = meaningDataBuffer->currentText();
     globalSets.meaningDataBuffer = m.toInt();
+    globalSets.autoStart = autoStart->isChecked();
     return globalSets;
 }

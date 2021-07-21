@@ -26,9 +26,15 @@ MainWindow::MainWindow(QWidget *parent) {
     adcCollector = new ADC(Settings::instance().loadGlobalSettings(), Settings::instance().loadAllChannelSettings());
     connect(adcCollector, &ADC::error, this, &MainWindow::slotADCError);
 
+    globalView = Settings::instance().loadGlobalSettings();
+
     initActions();
     initMenu();
     initToolBar();
+
+    if(globalView.autoStart) {
+        slotStart();
+    }
 
     this->setCentralWidget(centralWidget);
 }
