@@ -17,7 +17,7 @@
 
 #include <QApplication>
 #include "settings.h"
-#include "MainWindow.h"
+#include "mainwindow.h"
 
 /**
  * Точка входа в программу.

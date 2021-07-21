@@ -15,7 +15,7 @@
  along with ADCCollector. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MainWindow.h"
+#include "mainwindow.h"
 
 /**
  * Конструктор главного окна.

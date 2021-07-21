@@ -21,7 +21,7 @@
 #include <QPushButton>
 #include <QBoxLayout>
 #include <vector>
-#include "ChannelSettingsWidget.h"
+#include "channelsettingswidget.h"
 #include "settings.h"
 
 /**

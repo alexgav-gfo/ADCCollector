@@ -15,7 +15,7 @@
  along with ADCCollector. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ChannelSettingsWidget.h"
+#include "channelsettingswidget.h"
 
 /**
  * Конструктор виджета с настройками канала.
