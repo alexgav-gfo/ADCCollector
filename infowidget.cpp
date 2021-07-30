@@ -23,8 +23,6 @@
  */
 InfoWidget::InfoWidget(QWidget *parent) : QWidget(parent) {
     info = new QStorageInfo();
-    date = new QDate;
-    time = new QTime;
 
     QFont font;
     font.setPixelSize(24);
@@ -38,6 +36,7 @@ InfoWidget::InfoWidget(QWidget *parent) : QWidget(parent) {
 
     timerDate = new QTimer(this);
     connect(timerDate, &QTimer::timeout, this, &InfoWidget::slotTimerDate);
+    slotTimerDate();
     timerDate->start(1000);
 
     timerSpace = new QTimer(this);
@@ -56,9 +55,10 @@ InfoWidget::InfoWidget(QWidget *parent) : QWidget(parent) {
  * Слот для таймера, который спрашивает текущее время.
  */
 void InfoWidget::slotTimerDate() {
-    int y = date->currentDate().year();
-    int m = date->currentDate().month();
-    int d = date->currentDate().day();
+    QDateTime currentTime = QDateTime::currentDateTime();
+    int y = currentTime.date().year();
+    int m = currentTime.date().month();
+    int d = currentTime.date().day();
 
     QString currYear = QString::number(y);
     QString currMonth{};
@@ -74,9 +74,9 @@ void InfoWidget::slotTimerDate() {
         currDay = QString::number(d);
     }
 
-    int h = time->currentTime().hour();
-    int min = time->currentTime().minute();
-    int sec = time->currentTime().second();
+    int h = currentTime.time().hour();
+    int min = currentTime.time().minute();
+    int sec = currentTime.time().second();
 
     QString currHour{};
     QString currMinute{};
@@ -106,20 +106,26 @@ void InfoWidget::slotTimerDate() {
  */
 void InfoWidget::slotTimerSpace() {
     GlobalView globalView = Settings::instance().loadGlobalSettings();
-    info->setPath(globalView.dataRoot);
-    qint64 bytes = info->bytesAvailable();
-    double mb = static_cast<double>(bytes) / (1024 * 1024);
-    QString mbStr = QString("%1 Mb").arg(mb, 0, 'f', 1);
-    infoFreeSpaceLabel->setText(mbStr);
-
-    qint64 allSpace = info->bytesTotal();
-    if(bytes > allSpace / 3) {
-        infoFreeSpaceLabel->setStyleSheet(okColor);
+    QString dataRoot = globalView.dataRoot;
+    if(dataRoot.isEmpty()) {
+        infoFreeSpaceLabel->setStyleSheet(criticalColor);
+        infoFreeSpaceLabel->setText("Unknown");
     } else {
-        if(bytes < allSpace / 10) {
-            infoFreeSpaceLabel->setStyleSheet(criticalColor);
+        info->setPath(dataRoot);
+        qint64 bytes = info->bytesAvailable();
+        double mb = static_cast<double>(bytes) / (1024 * 1024);
+        QString mbStr = QString("%1 Mb").arg(mb, 0, 'f', 1);
+        infoFreeSpaceLabel->setText(mbStr);
+
+        qint64 allSpace = info->bytesTotal();
+        if(bytes > allSpace / 3) {
+            infoFreeSpaceLabel->setStyleSheet(okColor);
         } else {
-            infoFreeSpaceLabel->setStyleSheet(warningColor);
+            if(bytes < allSpace / 10) {
+                infoFreeSpaceLabel->setStyleSheet(criticalColor);
+            } else {
+                infoFreeSpaceLabel->setStyleSheet(warningColor);
+            }
         }
     }
 }
