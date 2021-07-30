@@ -44,8 +44,6 @@ private:
     const QString okColor = "color: rgb(0, 140, 30)";
 
     QStorageInfo *info;
-    QDate *date;
-    QTime *time;
     QLabel *freeSpaceLabel;
     QLabel *dateTimeStr;
     QLabel *infoFreeSpaceLabel;

@@ -23,8 +23,6 @@
  */
 InfoWidget::InfoWidget(QWidget *parent) : QWidget(parent) {
     info = new QStorageInfo();
-    date = new QDate;
-    time = new QTime;
 
     QFont font;
     font.setPixelSize(24);
@@ -38,6 +36,7 @@ InfoWidget::InfoWidget(QWidget *parent) : QWidget(parent) {
 
     timerDate = new QTimer(this);
     connect(timerDate, &QTimer::timeout, this, &InfoWidget::slotTimerDate);
+    slotTimerDate();
     timerDate->start(1000);
 
     timerSpace = new QTimer(this);
@@ -56,9 +55,10 @@ InfoWidget::InfoWidget(QWidget *parent) : QWidget(parent) {
  * Слот для таймера, который спрашивает текущее время.
  */
 void InfoWidget::slotTimerDate() {
-    int y = date->currentDate().year();
-    int m = date->currentDate().month();
-    int d = date->currentDate().day();
+    QDateTime currentTime = QDateTime::currentDateTime();
+    int y = currentTime.date().year();
+    int m = currentTime.date().month();
+    int d = currentTime.date().day();
 
     QString currYear = QString::number(y);
     QString currMonth{};
@@ -74,9 +74,9 @@ void InfoWidget::slotTimerDate() {
         currDay = QString::number(d);
     }
 
-    int h = time->currentTime().hour();
-    int min = time->currentTime().minute();
-    int sec = time->currentTime().second();
+    int h = currentTime.time().hour();
+    int min = currentTime.time().minute();
+    int sec = currentTime.time().second();
 
     QString currHour{};
     QString currMinute{};
