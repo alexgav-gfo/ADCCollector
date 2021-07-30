@@ -106,20 +106,26 @@ void InfoWidget::slotTimerDate() {
  */
 void InfoWidget::slotTimerSpace() {
     GlobalView globalView = Settings::instance().loadGlobalSettings();
-    info->setPath(globalView.dataRoot);
-    qint64 bytes = info->bytesAvailable();
-    double mb = static_cast<double>(bytes) / (1024 * 1024);
-    QString mbStr = QString("%1 Mb").arg(mb, 0, 'f', 1);
-    infoFreeSpaceLabel->setText(mbStr);
-
-    qint64 allSpace = info->bytesTotal();
-    if(bytes > allSpace / 3) {
-        infoFreeSpaceLabel->setStyleSheet(okColor);
+    QString dataRoot = globalView.dataRoot;
+    if(dataRoot.isEmpty()) {
+        infoFreeSpaceLabel->setStyleSheet(criticalColor);
+        infoFreeSpaceLabel->setText("Unknown");
     } else {
-        if(bytes < allSpace / 10) {
-            infoFreeSpaceLabel->setStyleSheet(criticalColor);
+        info->setPath(dataRoot);
+        qint64 bytes = info->bytesAvailable();
+        double mb = static_cast<double>(bytes) / (1024 * 1024);
+        QString mbStr = QString("%1 Mb").arg(mb, 0, 'f', 1);
+        infoFreeSpaceLabel->setText(mbStr);
+
+        qint64 allSpace = info->bytesTotal();
+        if(bytes > allSpace / 3) {
+            infoFreeSpaceLabel->setStyleSheet(okColor);
         } else {
-            infoFreeSpaceLabel->setStyleSheet(warningColor);
+            if(bytes < allSpace / 10) {
+                infoFreeSpaceLabel->setStyleSheet(criticalColor);
+            } else {
+                infoFreeSpaceLabel->setStyleSheet(warningColor);
+            }
         }
     }
 }
